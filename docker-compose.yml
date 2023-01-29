@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  ruby:
+    build: ./ruby
+    container_name: ruby
+    tty: true
+    ports:
+      - ${RUBY_PORT}:5672
+    depends_on:
+      - db
+  db:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      TZ: ${TZ}
+    ports:
+        - ${DB_PORT}:3306
+    volumes:
+        - db-store:/var/lib/mysql
+        - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+volumes:
+  db-store:
