@@ -5,10 +5,18 @@ services:
     build: ./ruby
     container_name: ruby
     tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      TZ: ${TZ}
+
     ports:
       - ${RUBY_PORT}:5672
-    depends_on:
-      - db
+    volumes:
+      - ./ruby:/myapp
+      - db-store:/var/lib/mysql
   db:
     image: mysql:8
     container_name: mysql
@@ -23,6 +31,6 @@ services:
         - ${DB_PORT}:3306
     volumes:
         - db-store:/var/lib/mysql
-        - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+        - ./mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
 volumes:
   db-store:
