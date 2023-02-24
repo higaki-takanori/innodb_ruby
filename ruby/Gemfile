@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'mysql2'
+gem 'dotenv'
 gem 'innodb_ruby', '~> 0.12.0'
+gem 'random_name_generator'
